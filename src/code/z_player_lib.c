@@ -1683,7 +1683,7 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
 
         if (this->actor.scale.y >= 0.0f) {
             if (!Player_HoldsHookshot(this) && ((heldActor = this->heldActor) != NULL)) {
-                if (this->stateFlags1 & PLAYER_STATE1_9) {
+                if (this->stateFlags1 & PLAYER_STATE1_READY_TO_FIRE) {
                     static Vec3f D_80126128 = { 398.0f, 1419.0f, 244.0f };
 
                     Matrix_MultVec3f(&D_80126128, &heldActor->world.pos);
@@ -1726,7 +1726,7 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
             Matrix_Push();
             Matrix_Translate(stringData->pos.x, stringData->pos.y, stringData->pos.z, MTXMODE_APPLY);
 
-            if ((this->stateFlags1 & PLAYER_STATE1_9) && (this->unk_860 >= 0) && (this->unk_834 <= 10)) {
+            if ((this->stateFlags1 & PLAYER_STATE1_READY_TO_FIRE) && (this->unk_860 >= 0) && (this->unk_834 <= 10)) {
                 Vec3f sp90;
                 f32 distXYZ;
 
