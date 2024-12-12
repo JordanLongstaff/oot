@@ -1796,7 +1796,7 @@ void func_80832440(PlayState* play, Player* this) {
     Camera_SetFinishedFlag(Play_GetCamera(play, CAM_ID_MAIN));
 
     this->stateFlags1 &= ~(PLAYER_STATE1_13 | PLAYER_STATE1_14 | PLAYER_STATE1_20 | PLAYER_STATE1_21);
-    this->stateFlags2 &= ~(PLAYER_STATE2_4 | PLAYER_STATE2_7 | PLAYER_STATE2_CRAWLING);
+    this->stateFlags2 &= ~(PLAYER_STATE2_4 | PLAYER_STATE2_GRABBED_BY_ENEMY | PLAYER_STATE2_CRAWLING);
 
     this->actor.shape.rot.x = 0;
     this->actor.shape.yOffset = 0.0f;
@@ -4602,7 +4602,7 @@ void func_80837C0C(PlayState* play, Player* this, s32 damageResponseType, f32 sp
     Player_PlaySfx(this, NA_SE_PL_DAMAGE);
 
     if (!func_80837B18(play, this, 0 - this->actor.colChkInfo.damage)) {
-        this->stateFlags2 &= ~PLAYER_STATE2_7;
+        this->stateFlags2 &= ~PLAYER_STATE2_GRABBED_BY_ENEMY;
         if (!(this->actor.bgCheckFlags & BGCHECKFLAG_GROUND) && !(this->stateFlags1 & PLAYER_STATE1_27)) {
             func_80837B9C(this, play);
         }
@@ -11902,7 +11902,7 @@ void Player_UpdateCommon(Player* this, PlayState* play, Input* input) {
         }
 
         if ((play->csCtx.state != CS_STATE_IDLE) && (this->csAction != PLAYER_CSACTION_6) &&
-            !(this->stateFlags1 & PLAYER_STATE1_23) && !(this->stateFlags2 & PLAYER_STATE2_7) &&
+            !(this->stateFlags1 & PLAYER_STATE1_23) && !(this->stateFlags2 & PLAYER_STATE2_GRABBED_BY_ENEMY) &&
             (this->actor.category == ACTORCAT_PLAYER)) {
             CsCmdActorCue* cue = play->csCtx.playerCue;
 
@@ -14219,7 +14219,7 @@ void Player_Action_8084F308(Player* this, PlayState* play) {
 
     if (func_80832594(this, 0, 100)) {
         func_80839F90(this, play);
-        this->stateFlags2 &= ~PLAYER_STATE2_7;
+        this->stateFlags2 &= ~PLAYER_STATE2_GRABBED_BY_ENEMY;
     }
 }
 
@@ -16064,7 +16064,7 @@ s32 func_80852F38(PlayState* play, Player* this) {
         func_80832564(play, this);
         Player_SetupAction(play, this, Player_Action_8084F308, 0);
         Player_AnimPlayOnce(play, this, &gPlayerAnim_link_normal_re_dead_attack);
-        this->stateFlags2 |= PLAYER_STATE2_7;
+        this->stateFlags2 |= PLAYER_STATE2_GRABBED_BY_ENEMY;
         func_80832224(this);
         Player_PlayVoiceSfx(this, NA_SE_VO_LI_HELD);
         return true;
@@ -16106,7 +16106,7 @@ s32 Player_InflictDamage(PlayState* play, s32 damage) {
     Player* this = GET_PLAYER(play);
 
     if (!Player_InBlockingCsMode(play, this) && !func_80837B18(play, this, damage)) {
-        this->stateFlags2 &= ~PLAYER_STATE2_7;
+        this->stateFlags2 &= ~PLAYER_STATE2_GRABBED_BY_ENEMY;
         return 1;
     }
 

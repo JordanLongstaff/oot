@@ -357,7 +357,7 @@ void EnRd_WalkToPlayer(EnRd* this, PlayState* play) {
     if ((ABS(yaw) < 0x1554) && (Actor_WorldDistXYZToActor(&this->actor, &player->actor) <= 150.0f)) {
         if (!(player->stateFlags1 & (PLAYER_STATE1_DEAD | PLAYER_STATE1_13 | PLAYER_STATE1_14 | PLAYER_STATE1_18 |
                                      PLAYER_STATE1_19 | PLAYER_STATE1_21)) &&
-            !(player->stateFlags2 & PLAYER_STATE2_7)) {
+            !(player->stateFlags2 & PLAYER_STATE2_GRABBED_BY_ENEMY)) {
             if (this->playerStunWaitTimer == 0) {
                 if (!(this->rdFlags & 0x80)) {
                     player->actor.freezeTimer = 40;
@@ -441,7 +441,7 @@ void EnRd_WalkToHome(EnRd* this, PlayState* play) {
 
     if (!(player->stateFlags1 & (PLAYER_STATE1_DEAD | PLAYER_STATE1_13 | PLAYER_STATE1_14 | PLAYER_STATE1_18 |
                                  PLAYER_STATE1_19 | PLAYER_STATE1_21)) &&
-        !(player->stateFlags2 & PLAYER_STATE2_7) &&
+        !(player->stateFlags2 & PLAYER_STATE2_GRABBED_BY_ENEMY) &&
         (Actor_WorldDistXYZToPoint(&player->actor, &this->actor.home.pos) < 150.0f)) {
         this->actor.attentionRangeType = ATTENTION_RANGE_0;
         EnRd_SetupWalkToPlayer(this, play);
@@ -544,7 +544,7 @@ void EnRd_Grab(EnRd* this, PlayState* play) {
             Math_SmoothStepToS(&this->upperBodyYRotation, 0, 1, 0x5DC, 0);
             FALLTHROUGH;
         case REDEAD_GRAB_ATTACK:
-            if (!(player->stateFlags2 & PLAYER_STATE2_7)) {
+            if (!(player->stateFlags2 & PLAYER_STATE2_GRABBED_BY_ENEMY)) {
                 Animation_Change(&this->skelAnime, &gGibdoRedeadGrabEndAnim, 0.5f, 0.0f,
                                  Animation_GetLastFrame(&gGibdoRedeadGrabEndAnim), ANIMMODE_ONCE_INTERP, 0.0f);
                 this->grabState++;

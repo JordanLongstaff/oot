@@ -743,7 +743,7 @@ typedef struct WeaponInfo {
 #define PLAYER_STATE2_4 (1 << 4)
 #define PLAYER_STATE2_5 (1 << 5)
 #define PLAYER_STATE2_6 (1 << 6)
-#define PLAYER_STATE2_7 (1 << 7)
+#define PLAYER_STATE2_GRABBED_BY_ENEMY (1 << 7)
 #define PLAYER_STATE2_8 (1 << 8)
 #define PLAYER_STATE2_FORCE_SAND_FLOOR_SOUND (1 << 9) // Forces sand footstep sounds regardless of current floor type
 #define PLAYER_STATE2_10 (1 << 10)
