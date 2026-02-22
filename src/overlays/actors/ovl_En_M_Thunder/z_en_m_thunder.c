@@ -352,7 +352,7 @@ void EnMThunder_Draw(Actor* thisx, PlayState* play2) {
         case M_THUNDER_ATTACK_WEAK:
             gSPSegment(POLY_XLU_DISP++, 0x08,
                        Gfx_TwoTexScroll(play->state.gfxCtx, G_TX_RENDERTILE,
-                                        0xFF - ((u8)(s32)(this->spinTrailTexScroll * 30) & 0xFF), 0, 0x40, 0x20, 1,
+                                        0xFF - ((u8)(s32)(this->spinTrailTexScroll * 30) & 0xFF), 0, 64, 32, 1,
                                         0xFF - ((u8)(s32)(this->spinTrailTexScroll * 20) & 0xFF), 0, 8, 8));
             break;
     }
@@ -394,20 +394,20 @@ void EnMThunder_Draw(Actor* thisx, PlayState* play2) {
         spinChargeScale = (sSpinChargeScale[(play->gameplayFrames & 7)] * 6.0f) + 1.0f;
         gDPSetPrimColor(POLY_XLU_DISP++, 0, 0x80, 255, 255, 170, this->chargeAlpha);
         gDPSetEnvColor(POLY_XLU_DISP++, 255, 100, 0, 128);
-        chargeTexScroll = 0x28;
+        chargeTexScroll = 40;
     } else {
         spinChargeScale = (sSpinChargeScale[play->gameplayFrames & 7] * 2.0f) + 1.0f;
         gDPSetPrimColor(POLY_XLU_DISP++, 0, 0x80, 170, 255, 255, this->chargeAlpha);
         gDPSetEnvColor(POLY_XLU_DISP++, 0, 100, 255, 128);
-        chargeTexScroll = 0x14;
+        chargeTexScroll = 20;
     }
     Matrix_Scale(1.0f, spinChargeScale, spinChargeScale, MTXMODE_APPLY);
     MATRIX_FINALIZE_AND_LOAD(POLY_XLU_DISP++, play->state.gfxCtx, "../z_en_m_thunder.c", 960);
 
     gSPSegment(POLY_XLU_DISP++, 0x09,
-               Gfx_TwoTexScroll(play->state.gfxCtx, G_TX_RENDERTILE, (play->gameplayFrames * 5) & 0xFF, 0, 0x20, 0x20,
-                                1, (play->gameplayFrames * 20) & 0xFF, (play->gameplayFrames * chargeTexScroll) & 0xFF,
-                                8, 8));
+               Gfx_TwoTexScroll(play->state.gfxCtx, G_TX_RENDERTILE, (play->gameplayFrames * 5) & 0xFF, 0, 32, 32, 1,
+                                (play->gameplayFrames * 20) & 0xFF, (play->gameplayFrames * chargeTexScroll) & 0xFF, 8,
+                                8));
 
     gSPDisplayList(POLY_XLU_DISP++, gSpinAttackChargingDL);
 
