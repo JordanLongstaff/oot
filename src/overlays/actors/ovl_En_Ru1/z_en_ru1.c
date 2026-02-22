@@ -2018,7 +2018,7 @@ void EnRu1_SpeakableJabu_Talking(EnRu1* this, PlayState* play) {
 
 void EnRu1_SpeakableJabu_TakingSeat(EnRu1* this, PlayState* play) {
     s32 doneAnim;
-  
+
     EnRu1_TurnUpperBodyForward(this);
     doneAnim = EnRu1_UpdateSkelAnime(this);
     EnRu1_PlaySittingSfx(this);
