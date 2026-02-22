@@ -97,7 +97,7 @@ void EnMThunder_Init(Actor* thisx, PlayState* play2) {
     this->actor.shape.rot.y = player->actor.shape.rot.y + 0x8000;
     this->actor.room = -1;
     Actor_SetScale(&this->actor, 0.1f);
-    this->isUsingMagic = 0;
+    this->isUsingMagic = false;
 
     if (player->stateFlags2 & PLAYER_STATE2_17) {
         if (!gSaveContext.save.info.playerData.isMagicAcquired || (gSaveContext.magicState != MAGIC_STATE_IDLE) ||
@@ -110,7 +110,7 @@ void EnMThunder_Init(Actor* thisx, PlayState* play2) {
         }
 
         player->stateFlags2 &= ~PLAYER_STATE2_17;
-        this->isUsingMagic = 1;
+        this->isUsingMagic = true;
         this->collider.elem.atDmgInfo.dmgFlags = sSpinAttackDmgFlags[this->swordType];
         this->attackStrength = M_THUNDER_ATTACK_WEAK;
         this->targetScale = ((this->swordType == M_THUNDER_SWORD_KOKIRI) ? 2 : 4);
@@ -179,7 +179,7 @@ void EnMThunder_ChargingSpinAttack(EnMThunder* this, PlayState* play) {
                 return;
             }
 
-            this->isUsingMagic = 1;
+            this->isUsingMagic = true;
         }
     }
 
