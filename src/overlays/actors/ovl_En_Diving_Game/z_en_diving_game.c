@@ -154,7 +154,7 @@ s32 EnDivingGame_HasMinigameFinished(EnDivingGame* this, PlayState* play) {
         this->actor.textId = 0x71AD;
         Message_StartTextbox(play, this->actor.textId, NULL);
         this->textState = TEXT_STATE_EVENT;
-        this->allRupeesThrown = this->state = this->phase = this->unk_2A2 = this->grabbedRupeesCounter = 0;
+        this->allRupeesThrown = this->state = this->phase = this->rupeePhase = this->grabbedRupeesCounter = 0;
         Player_SetCsActionWithHaltedActors(play, NULL, PLAYER_CSACTION_8);
         this->actionFunc = EnDivingGame_TalkOutsideMinigame;
         return true;
@@ -167,7 +167,7 @@ s32 EnDivingGame_HasMinigameFinished(EnDivingGame* this, PlayState* play) {
         if (this->grabbedRupeesCounter >= rupeesNeeded) {
             // Won.
             gSaveContext.timerState = TIMER_STATE_OFF;
-            this->allRupeesThrown = this->state = this->phase = this->unk_2A2 = this->grabbedRupeesCounter = 0;
+            this->allRupeesThrown = this->state = this->phase = this->rupeePhase = this->grabbedRupeesCounter = 0;
             if (!GET_EVENTCHKINF(EVENTCHKINF_OBTAINED_SILVER_SCALE)) {
                 this->actor.textId = 0x4055;
             } else {
@@ -260,12 +260,12 @@ void EnDivingGame_HandlePlayChoice(EnDivingGame* this, PlayState* play) {
                     this->actor.textId = 0x4054;
                 } else {
                     this->actor.textId = 0x85;
-                    this->allRupeesThrown = this->state = this->phase = this->unk_2A2 = this->grabbedRupeesCounter = 0;
+                    this->allRupeesThrown = this->state = this->phase = this->rupeePhase = this->grabbedRupeesCounter = 0;
                 }
                 break;
             case 1: // No
                 this->actor.textId = 0x2D;
-                this->allRupeesThrown = this->state = this->phase = this->unk_2A2 = this->grabbedRupeesCounter = 0;
+                this->allRupeesThrown = this->state = this->phase = this->rupeePhase = this->grabbedRupeesCounter = 0;
                 break;
         }
         if (!GET_EVENTCHKINF(EVENTCHKINF_OBTAINED_SILVER_SCALE) || this->actor.textId == 0x85 ||
@@ -390,9 +390,9 @@ void EnDivingGame_ThrowRupees(EnDivingGame* this, PlayState* play) {
                                    (fabsf(this->subCamAt.x - this->subCamAtNext.x) < 2.0f) &&
                                    (fabsf(this->subCamAt.y - this->subCamAtNext.y) < 2.0f) &&
                                    (fabsf(this->subCamAt.z - this->subCamAtNext.z) < 2.0f))) {
-        if (this->unk_2A2 != 0) {
+        if (this->rupeePhase != ENDIVINGGAME_RUPEE_PHASE_NONE) {
             this->subCamTimer = 70;
-            this->unk_2A2 = 2;
+            this->rupeePhase = ENDIVINGGAME_RUPEE_PHASE_SINKING;
             this->actionFunc = EnDivingGame_UnderwaterViewCs;
         } else {
             this->actionFunc = EnDivingGame_SetupUnderwaterViewCs;
@@ -404,7 +404,7 @@ void EnDivingGame_ThrowRupees(EnDivingGame* this, PlayState* play) {
 void EnDivingGame_SetupUnderwaterViewCs(EnDivingGame* this, PlayState* play) {
     SkelAnime_Update(&this->skelAnime);
     if (this->throwTimer == 0) {
-        this->unk_2A2 = 1;
+        this->rupeePhase = ENDIVINGGAME_RUPEE_PHASE_SWITCHING_CAM;
         this->subCamTimer = 100;
         this->actionFunc = EnDivingGame_ThrowRupees;
         this->subCamAt.x = this->subCamAtNext.x = -210.0f;
@@ -491,7 +491,7 @@ void EnDivingGame_EndMinigameAfterScaleGiven(EnDivingGame* this, PlayState* play
     SkelAnime_Update(&this->skelAnime);
     if (Message_GetState(&play->msgCtx) == TEXT_STATE_DONE && Message_ShouldAdvance(play)) {
         PRINTF(VT_FGCOL(GREEN) T("☆☆☆☆☆ 正常終了 ☆☆☆☆☆ \n", "☆☆☆☆☆ Normal termination ☆☆☆☆☆ \n") VT_RST);
-        this->allRupeesThrown = this->state = this->phase = this->unk_2A2 = this->grabbedRupeesCounter = 0;
+        this->allRupeesThrown = this->state = this->phase = this->rupeePhase = this->grabbedRupeesCounter = 0;
         SET_EVENTCHKINF(EVENTCHKINF_OBTAINED_SILVER_SCALE);
         this->actionFunc = EnDivingGame_Reset;
     }

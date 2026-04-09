@@ -240,7 +240,8 @@ void EnExRuppy_EnterWater(EnExRuppy* this, PlayState* play) {
     EnDivingGame* divingGame = (EnDivingGame*)this->actor.parent;
     f32 temp_f2;
 
-    if ((divingGame != NULL) && (divingGame->actor.update != NULL) && (divingGame->unk_2A2 == 2)) {
+    if ((divingGame != NULL) && (divingGame->actor.update != NULL) &&
+        (divingGame->rupeePhase == ENDIVINGGAME_RUPEE_PHASE_SINKING)) {
         this->invisible = false;
         this->actor.world.pos.x = ((Rand_ZeroOne() - 0.5f) * 300.0f) + -260.0f;
         this->actor.world.pos.y = ((Rand_ZeroOne() - 0.5f) * 200.0f) + 370.0f;

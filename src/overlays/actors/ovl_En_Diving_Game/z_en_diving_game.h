@@ -25,7 +25,7 @@ typedef struct EnDivingGame {
     /* 0x029C */ s16 phase;
     /* 0x029E */ s16 eyeTexIndex;
     /* 0x02A0 */ s16 subCamId;
-    /* 0x02A2 */ s16 unk_2A2; // 0: , 1: , 2: Tells rupees to sink in water
+    /* 0x02A2 */ s16 rupeePhase;
     /* 0x02A4 */ s16 grabbedRupeesCounter;
     /* 0x02A6 */ s16 rupeesLeftToThrow;
     /* 0x02A8 */ s16 state; // minigameState? 0: default, 1: waiting to give the scale, 2: minigame started
@@ -60,5 +60,11 @@ typedef enum EnDivingGameState {
     /* 1 */ ENDIVINGGAME_STATE_AWARDPRIZE, // Waiting to give the scale to player.
     /* 2 */ ENDIVINGGAME_STATE_PLAYING
 } EnDivingGameState;
+
+typedef enum EnDivingGameRupeePhase {
+    /* 0 */ ENDIVINGGAME_RUPEE_PHASE_NONE, // No rupees underwater yet, but they might be thrown.
+    /* 1 */ ENDIVINGGAME_RUPEE_PHASE_SWITCHING_CAM, // Switching to underwater view.
+    /* 2 */ ENDIVINGGAME_RUPEE_PHASE_SINKING, // Rupees are spawned and sinking, player can grab them.
+} EnDivingGameRupeePhase;
 
 #endif
