@@ -134,9 +134,9 @@ void EnDivingGame_SpawnRuppy(EnDivingGame* this, PlayState* play) {
     rupeePos.x = (Rand_ZeroOne() - 0.5f) * 30.0f + this->actor.world.pos.x;
     rupeePos.y = (Rand_ZeroOne() - 0.5f) * 20.0f + (this->actor.world.pos.y + 30.0f);
     rupeePos.z = (Rand_ZeroOne() - 0.5f) * 20.0f + this->actor.world.pos.z;
-    rupee = (EnExRuppy*)Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_EN_EX_RUPPY, rupeePos.x,
-                                           rupeePos.y, rupeePos.z, 0, (s16)Rand_CenteredFloat(3500.0f) - 1000,
-                                           this->unthrownRupees, 0);
+    rupee =
+        (EnExRuppy*)Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_EN_EX_RUPPY, rupeePos.x, rupeePos.y,
+                                       rupeePos.z, 0, (s16)Rand_CenteredFloat(3500.0f) - 1000, this->unthrownRupees, 0);
     if (rupee != NULL) {
         rupee->actor.speed = 12.0f;
         rupee->actor.velocity.y = 6.0f;
