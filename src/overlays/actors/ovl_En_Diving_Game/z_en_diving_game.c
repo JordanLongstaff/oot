@@ -48,8 +48,8 @@ void EnDivingGame_UnderwaterViewCs(EnDivingGame* this, PlayState* play);
 void EnDivingGame_StartMinigame(EnDivingGame* this, PlayState* play);
 void EnDivingGame_TalkDuringMinigame(EnDivingGame* this, PlayState* play);
 void EnDivingGame_EarnedScale(EnDivingGame* this, PlayState* play);
+void EnDivingGame_WaitGiveScale(EnDivingGame* this, PlayState* play);
 void EnDivingGame_GiveScale(EnDivingGame* this, PlayState* play);
-void EnDivingGame_ReceiveScale(EnDivingGame* this, PlayState* play);
 void EnDivingGame_EndMinigameAfterScaleGiven(EnDivingGame* this, PlayState* play);
 
 ActorProfile En_Diving_Game_Profile = {
@@ -211,7 +211,7 @@ void EnDivingGame_Idle(EnDivingGame* this, PlayState* play) {
                         this->actionFunc = EnDivingGame_HandlePlayChoice;
                         break;
                     case ENDIVINGGAME_STATE_AWARDPRIZE:
-                        this->actionFunc = EnDivingGame_GiveScale;
+                        this->actionFunc = EnDivingGame_WaitGiveScale;
                         break;
                     case ENDIVINGGAME_STATE_PLAYING:
                         this->actionFunc = EnDivingGame_TalkDuringMinigame;
@@ -468,17 +468,17 @@ void EnDivingGame_EarnedScale(EnDivingGame* this, PlayState* play) {
     }
 }
 
-void EnDivingGame_GiveScale(EnDivingGame* this, PlayState* play) {
+void EnDivingGame_WaitGiveScale(EnDivingGame* this, PlayState* play) {
     SkelAnime_Update(&this->skelAnime);
     if ((this->textState == Message_GetState(&play->msgCtx) && Message_ShouldAdvance(play))) {
         Message_CloseTextbox(play);
         this->actor.parent = NULL;
         Actor_OfferGetItem(&this->actor, play, GI_SCALE_SILVER, 90.0f, 10.0f);
-        this->actionFunc = EnDivingGame_ReceiveScale;
+        this->actionFunc = EnDivingGame_GiveScale;
     }
 }
 
-void EnDivingGame_ReceiveScale(EnDivingGame* this, PlayState* play) {
+void EnDivingGame_GiveScale(EnDivingGame* this, PlayState* play) {
     SkelAnime_Update(&this->skelAnime);
     if (Actor_HasParent(&this->actor, play)) {
         this->actionFunc = EnDivingGame_EndMinigameAfterScaleGiven;
