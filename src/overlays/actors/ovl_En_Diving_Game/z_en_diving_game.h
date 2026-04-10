@@ -17,7 +17,7 @@ typedef struct EnDivingGame {
     /* 0x0284 */ Vec3s headRot;
     /* 0x028A */ Vec3s torsoRot;
     /* 0x0290 */ s16 unk_290; // counter that only goes up
-    /* 0x0292 */ s16 textState;
+    /* 0x0292 */ s16 nextTextState;
     /* 0x0294 */ s16 subCamTimer;
     /* 0x0296 */ s16 throwTimer; // read by ExRuppy // timer?
     /* 0x0298 */ s16 eyeTimer;

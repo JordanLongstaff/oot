@@ -153,7 +153,7 @@ s32 EnDivingGame_HasMinigameFinished(EnDivingGame* this, PlayState* play) {
         Sfx_PlaySfxCentered(NA_SE_SY_FOUND);
         this->actor.textId = 0x71AD;
         Message_StartTextbox(play, this->actor.textId, NULL);
-        this->textState = TEXT_STATE_EVENT;
+        this->nextTextState = TEXT_STATE_EVENT;
         this->allRupeesThrown = this->state = this->phase = this->rupeePhase = this->grabbedRupees = 0;
         Player_SetCsActionWithHaltedActors(play, NULL, PLAYER_CSACTION_8);
         this->actionFunc = EnDivingGame_TalkOutsideMinigame;
@@ -177,7 +177,7 @@ s32 EnDivingGame_HasMinigameFinished(EnDivingGame* this, PlayState* play) {
                 }
             }
             Message_StartTextbox(play, this->actor.textId, NULL);
-            this->textState = TEXT_STATE_EVENT;
+            this->nextTextState = TEXT_STATE_EVENT;
             func_800F5B58();
             Audio_PlayFanfare(NA_BGM_SMALL_ITEM_GET);
             Player_SetCsActionWithHaltedActors(play, NULL, PLAYER_CSACTION_8);
@@ -204,7 +204,7 @@ void EnDivingGame_Idle(EnDivingGame* this, PlayState* play) {
     SkelAnime_Update(&this->skelAnime);
     if (this->state != ENDIVINGGAME_STATE_PLAYING || !EnDivingGame_HasMinigameFinished(this, play)) {
         if (Actor_TalkOfferAccepted(&this->actor, play)) {
-            if (this->textState != TEXT_STATE_DONE) {
+            if (this->nextTextState != TEXT_STATE_DONE) {
                 switch (this->state) {
                     case ENDIVINGGAME_STATE_NOTPLAYING:
                         Player_SetCsActionWithHaltedActors(play, NULL, PLAYER_CSACTION_8);
@@ -221,11 +221,11 @@ void EnDivingGame_Idle(EnDivingGame* this, PlayState* play) {
         } else {
             if (MaskReaction_GetTextId(play, MASK_REACTION_SET_ZORA) != 0) {
                 this->actor.textId = MaskReaction_GetTextId(play, MASK_REACTION_SET_ZORA);
-                this->textState = TEXT_STATE_DONE;
+                this->nextTextState = TEXT_STATE_DONE;
             } else {
                 switch (this->state) {
                     case ENDIVINGGAME_STATE_NOTPLAYING:
-                        this->textState = TEXT_STATE_CHOICE;
+                        this->nextTextState = TEXT_STATE_CHOICE;
                         if (!GET_EVENTCHKINF(EVENTCHKINF_OBTAINED_SILVER_SCALE)) {
                             this->actor.textId = 0x4053;
                             this->phase = ENDIVINGGAME_PHASE_1;
@@ -236,11 +236,11 @@ void EnDivingGame_Idle(EnDivingGame* this, PlayState* play) {
                         break;
                     case ENDIVINGGAME_STATE_AWARDPRIZE:
                         this->actor.textId = 0x4056;
-                        this->textState = TEXT_STATE_EVENT;
+                        this->nextTextState = TEXT_STATE_EVENT;
                         break;
                     case ENDIVINGGAME_STATE_PLAYING:
                         this->actor.textId = 0x405B;
-                        this->textState = TEXT_STATE_EVENT;
+                        this->nextTextState = TEXT_STATE_EVENT;
                         break;
                 }
             }
@@ -251,7 +251,7 @@ void EnDivingGame_Idle(EnDivingGame* this, PlayState* play) {
 
 void EnDivingGame_HandlePlayChoice(EnDivingGame* this, PlayState* play) {
     SkelAnime_Update(&this->skelAnime);
-    if (this->textState == Message_GetState(&play->msgCtx) &&
+    if (this->nextTextState == Message_GetState(&play->msgCtx) &&
         Message_ShouldAdvance(play)) { // Did the player select an answer?
         switch (play->msgCtx.choiceIndex) {
             case 0: // Yes
@@ -271,7 +271,7 @@ void EnDivingGame_HandlePlayChoice(EnDivingGame* this, PlayState* play) {
         if (!GET_EVENTCHKINF(EVENTCHKINF_OBTAINED_SILVER_SCALE) || (this->actor.textId == 0x85) ||
             (this->actor.textId == 0x2D)) {
             Message_ContinueTextbox(play, this->actor.textId);
-            this->textState = TEXT_STATE_EVENT;
+            this->nextTextState = TEXT_STATE_EVENT;
             this->actionFunc = EnDivingGame_TalkOutsideMinigame;
         } else {
             play->msgCtx.msgMode = MSGMODE_PAUSED;
@@ -283,7 +283,7 @@ void EnDivingGame_HandlePlayChoice(EnDivingGame* this, PlayState* play) {
 
 void EnDivingGame_TalkOutsideMinigame(EnDivingGame* this, PlayState* play) {
     SkelAnime_Update(&this->skelAnime);
-    if (this->textState == Message_GetState(&play->msgCtx) && Message_ShouldAdvance(play)) {
+    if (this->nextTextState == Message_GetState(&play->msgCtx) && Message_ShouldAdvance(play)) {
         if (this->phase == ENDIVINGGAME_PHASE_ENDED) {
             Message_CloseTextbox(play);
             Player_SetCsActionWithHaltedActors(play, NULL, PLAYER_CSACTION_7);
@@ -423,14 +423,14 @@ void EnDivingGame_UnderwaterViewCs(EnDivingGame* this, PlayState* play) {
         Play_ChangeCameraStatus(play, CAM_ID_MAIN, CAM_STAT_ACTIVE);
         this->actor.textId = 0x405A;
         Message_ContinueTextbox(play, this->actor.textId);
-        this->textState = TEXT_STATE_EVENT;
+        this->nextTextState = TEXT_STATE_EVENT;
         this->actionFunc = EnDivingGame_StartMinigame;
     }
 }
 
 void EnDivingGame_StartMinigame(EnDivingGame* this, PlayState* play) {
     SkelAnime_Update(&this->skelAnime);
-    if (this->textState == Message_GetState(&play->msgCtx) && Message_ShouldAdvance(play)) {
+    if (this->nextTextState == Message_GetState(&play->msgCtx) && Message_ShouldAdvance(play)) {
         Message_CloseTextbox(play);
         if (!GET_EVENTCHKINF(EVENTCHKINF_OBTAINED_SILVER_SCALE)) {
             Interface_SetTimer(50 + BREG(2));
@@ -440,7 +440,7 @@ void EnDivingGame_StartMinigame(EnDivingGame* this, PlayState* play) {
         func_800F5ACC(NA_BGM_TIMED_MINI_GAME);
         Player_SetCsActionWithHaltedActors(play, NULL, PLAYER_CSACTION_7);
         this->actor.textId = 0x405B;
-        this->textState = TEXT_STATE_EVENT;
+        this->nextTextState = TEXT_STATE_EVENT;
         this->state = ENDIVINGGAME_STATE_PLAYING;
         this->actionFunc = EnDivingGame_Idle;
     }
@@ -448,7 +448,7 @@ void EnDivingGame_StartMinigame(EnDivingGame* this, PlayState* play) {
 
 void EnDivingGame_TalkDuringMinigame(EnDivingGame* this, PlayState* play) {
     SkelAnime_Update(&this->skelAnime);
-    if ((this->textState == Message_GetState(&play->msgCtx) && Message_ShouldAdvance(play))) {
+    if ((this->nextTextState == Message_GetState(&play->msgCtx) && Message_ShouldAdvance(play))) {
         Message_CloseTextbox(play);
         this->actionFunc = EnDivingGame_Idle;
     } else {
@@ -458,11 +458,11 @@ void EnDivingGame_TalkDuringMinigame(EnDivingGame* this, PlayState* play) {
 
 void EnDivingGame_EarnedScale(EnDivingGame* this, PlayState* play) {
     SkelAnime_Update(&this->skelAnime);
-    if ((this->textState == Message_GetState(&play->msgCtx) && Message_ShouldAdvance(play))) {
+    if ((this->nextTextState == Message_GetState(&play->msgCtx) && Message_ShouldAdvance(play))) {
         Message_CloseTextbox(play);
         Player_SetCsActionWithHaltedActors(play, NULL, PLAYER_CSACTION_7);
         this->actor.textId = 0x4056;
-        this->textState = TEXT_STATE_EVENT;
+        this->nextTextState = TEXT_STATE_EVENT;
         this->state = ENDIVINGGAME_STATE_AWARDPRIZE;
         this->actionFunc = EnDivingGame_Idle;
     }
@@ -470,7 +470,7 @@ void EnDivingGame_EarnedScale(EnDivingGame* this, PlayState* play) {
 
 void EnDivingGame_WaitGiveScale(EnDivingGame* this, PlayState* play) {
     SkelAnime_Update(&this->skelAnime);
-    if ((this->textState == Message_GetState(&play->msgCtx) && Message_ShouldAdvance(play))) {
+    if ((this->nextTextState == Message_GetState(&play->msgCtx) && Message_ShouldAdvance(play))) {
         Message_CloseTextbox(play);
         this->actor.parent = NULL;
         Actor_OfferGetItem(&this->actor, play, GI_SCALE_SILVER, 90.0f, 10.0f);
