@@ -268,8 +268,8 @@ void EnDivingGame_HandlePlayChoice(EnDivingGame* this, PlayState* play) {
                 this->allRupeesThrown = this->state = this->phase = this->rupeePhase = this->grabbedRupees = 0;
                 break;
         }
-        if (!GET_EVENTCHKINF(EVENTCHKINF_OBTAINED_SILVER_SCALE) || this->actor.textId == 0x85 ||
-            this->actor.textId == 0x2D) {
+        if (!GET_EVENTCHKINF(EVENTCHKINF_OBTAINED_SILVER_SCALE) || (this->actor.textId == 0x85) ||
+            (this->actor.textId == 0x2D)) {
             Message_ContinueTextbox(play, this->actor.textId);
             this->textState = TEXT_STATE_EVENT;
             this->actionFunc = EnDivingGame_TalkOutsideMinigame;
