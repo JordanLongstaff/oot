@@ -299,7 +299,7 @@ void EnExRuppy_WaitInGame(EnExRuppy* this, PlayState* play) {
             } else if (this->actor.xyzDistToPlayerSq < SQ(localConst)) {
                 Rupees_ChangeBy(this->rupeeValue);
                 Sfx_PlaySfxCentered(NA_SE_SY_GET_RUPY);
-                divingGame->grabbedRupeesCounter++;
+                divingGame->grabbedRupees++;
                 Actor_Kill(&this->actor);
             }
         } else {

@@ -136,7 +136,7 @@ void EnDivingGame_SpawnRuppy(EnDivingGame* this, PlayState* play) {
     rupeePos.z = (Rand_ZeroOne() - 0.5f) * 20.0f + this->actor.world.pos.z;
     rupee = (EnExRuppy*)Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_EN_EX_RUPPY, rupeePos.x,
                                            rupeePos.y, rupeePos.z, 0, (s16)Rand_CenteredFloat(3500.0f) - 1000,
-                                           this->rupeesLeftToThrow, 0);
+                                           this->unthrownRupees, 0);
     if (rupee != NULL) {
         rupee->actor.speed = 12.0f;
         rupee->actor.velocity.y = 6.0f;
@@ -154,7 +154,7 @@ s32 EnDivingGame_HasMinigameFinished(EnDivingGame* this, PlayState* play) {
         this->actor.textId = 0x71AD;
         Message_StartTextbox(play, this->actor.textId, NULL);
         this->textState = TEXT_STATE_EVENT;
-        this->allRupeesThrown = this->state = this->phase = this->rupeePhase = this->grabbedRupeesCounter = 0;
+        this->allRupeesThrown = this->state = this->phase = this->rupeePhase = this->grabbedRupees = 0;
         Player_SetCsActionWithHaltedActors(play, NULL, PLAYER_CSACTION_8);
         this->actionFunc = EnDivingGame_TalkOutsideMinigame;
         return true;
@@ -164,10 +164,10 @@ s32 EnDivingGame_HasMinigameFinished(EnDivingGame* this, PlayState* play) {
         if (GET_EVENTCHKINF(EVENTCHKINF_OBTAINED_SILVER_SCALE)) {
             rupeesNeeded = 10;
         }
-        if (this->grabbedRupeesCounter >= rupeesNeeded) {
+        if (this->grabbedRupees >= rupeesNeeded) {
             // Won.
             gSaveContext.timerState = TIMER_STATE_OFF;
-            this->allRupeesThrown = this->state = this->phase = this->rupeePhase = this->grabbedRupeesCounter = 0;
+            this->allRupeesThrown = this->state = this->phase = this->rupeePhase = this->grabbedRupees = 0;
             if (!GET_EVENTCHKINF(EVENTCHKINF_OBTAINED_SILVER_SCALE)) {
                 this->actor.textId = 0x4055;
             } else {
@@ -260,12 +260,12 @@ void EnDivingGame_HandlePlayChoice(EnDivingGame* this, PlayState* play) {
                     this->actor.textId = 0x4054;
                 } else {
                     this->actor.textId = 0x85;
-                    this->allRupeesThrown = this->state = this->phase = this->rupeePhase = this->grabbedRupeesCounter = 0;
+                    this->allRupeesThrown = this->state = this->phase = this->rupeePhase = this->grabbedRupees = 0;
                 }
                 break;
             case 1: // No
                 this->actor.textId = 0x2D;
-                this->allRupeesThrown = this->state = this->phase = this->rupeePhase = this->grabbedRupeesCounter = 0;
+                this->allRupeesThrown = this->state = this->phase = this->rupeePhase = this->grabbedRupees = 0;
                 break;
         }
         if (!GET_EVENTCHKINF(EVENTCHKINF_OBTAINED_SILVER_SCALE) || this->actor.textId == 0x85 ||
@@ -326,9 +326,9 @@ void EnDivingGame_SetupRupeeThrowCam(EnDivingGame* this, PlayState* play) {
     this->subCamEyeNext.y = -20.0f;
     this->subCamEyeNext.z = -240.0f;
     if (!GET_EVENTCHKINF(EVENTCHKINF_OBTAINED_SILVER_SCALE)) {
-        this->rupeesLeftToThrow = 5;
+        this->unthrownRupees = 5;
     } else {
-        this->rupeesLeftToThrow = 10;
+        this->unthrownRupees = 10;
     }
     this->subCamEyeMaxVelFrac.x = this->subCamEyeMaxVelFrac.y = this->subCamEyeMaxVelFrac.z =
         this->subCamAtMaxVelFrac.x = this->subCamAtMaxVelFrac.y = this->subCamAtMaxVelFrac.z = 0.1f;
@@ -373,14 +373,14 @@ void EnDivingGame_ThrowRupees(EnDivingGame* this, PlayState* play) {
     if (!this->allRupeesThrown && this->spawnRuppyTimer == 0) {
         this->spawnRuppyTimer = 5;
         EnDivingGame_SpawnRuppy(this, play);
-        this->rupeesLeftToThrow--;
+        this->unthrownRupees--;
         if (!GET_EVENTCHKINF(EVENTCHKINF_OBTAINED_SILVER_SCALE)) {
             this->throwTimer = 30;
         } else {
             this->throwTimer = 5;
         }
-        if (this->rupeesLeftToThrow <= 0) {
-            this->rupeesLeftToThrow = 0;
+        if (this->unthrownRupees <= 0) {
+            this->unthrownRupees = 0;
             this->allRupeesThrown = true;
         }
     }
@@ -491,7 +491,7 @@ void EnDivingGame_EndMinigameAfterScaleGiven(EnDivingGame* this, PlayState* play
     SkelAnime_Update(&this->skelAnime);
     if (Message_GetState(&play->msgCtx) == TEXT_STATE_DONE && Message_ShouldAdvance(play)) {
         PRINTF(VT_FGCOL(GREEN) T("☆☆☆☆☆ 正常終了 ☆☆☆☆☆ \n", "☆☆☆☆☆ Normal termination ☆☆☆☆☆ \n") VT_RST);
-        this->allRupeesThrown = this->state = this->phase = this->rupeePhase = this->grabbedRupeesCounter = 0;
+        this->allRupeesThrown = this->state = this->phase = this->rupeePhase = this->grabbedRupees = 0;
         SET_EVENTCHKINF(EVENTCHKINF_OBTAINED_SILVER_SCALE);
         this->actionFunc = EnDivingGame_Reset;
     }
