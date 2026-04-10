@@ -27,7 +27,7 @@ typedef struct EnDivingGame {
     /* 0x02A0 */ s16 subCamId;
     /* 0x02A2 */ s16 rupeePhase;
     /* 0x02A4 */ s16 grabbedRupees;
-    /* 0x02A6 */ s16 unthrownRupees;
+    /* 0x02A6 */ s16 rupeesLeftToThrow;
     /* 0x02A8 */ s16 state; // minigameState? 0: default, 1: waiting to give the scale, 2: minigame started
     /* 0x02AA */ s16 extraWinCount; // counts how many times you have beaten the minigame **after** you got the scale. ExRuppy will reset it to zero if a 500 rupee is spawned.
     /* 0x02AC */ char unk_2AC[0xC]; // probably another Vec3f, but unused.

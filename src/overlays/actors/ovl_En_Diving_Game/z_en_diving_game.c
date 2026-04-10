@@ -136,7 +136,7 @@ void EnDivingGame_SpawnRuppy(EnDivingGame* this, PlayState* play) {
     rupeePos.z = (Rand_ZeroOne() - 0.5f) * 20.0f + this->actor.world.pos.z;
     rupee =
         (EnExRuppy*)Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_EN_EX_RUPPY, rupeePos.x, rupeePos.y,
-                                       rupeePos.z, 0, (s16)Rand_CenteredFloat(3500.0f) - 1000, this->unthrownRupees, 0);
+                                       rupeePos.z, 0, (s16)Rand_CenteredFloat(3500.0f) - 1000, this->rupeesLeftToThrow, 0);
     if (rupee != NULL) {
         rupee->actor.speed = 12.0f;
         rupee->actor.velocity.y = 6.0f;
@@ -326,9 +326,9 @@ void EnDivingGame_SetupRupeeThrowCam(EnDivingGame* this, PlayState* play) {
     this->subCamEyeNext.y = -20.0f;
     this->subCamEyeNext.z = -240.0f;
     if (!GET_EVENTCHKINF(EVENTCHKINF_OBTAINED_SILVER_SCALE)) {
-        this->unthrownRupees = 5;
+        this->rupeesLeftToThrow = 5;
     } else {
-        this->unthrownRupees = 10;
+        this->rupeesLeftToThrow = 10;
     }
     this->subCamEyeMaxVelFrac.x = this->subCamEyeMaxVelFrac.y = this->subCamEyeMaxVelFrac.z =
         this->subCamAtMaxVelFrac.x = this->subCamAtMaxVelFrac.y = this->subCamAtMaxVelFrac.z = 0.1f;
@@ -373,14 +373,14 @@ void EnDivingGame_ThrowRupees(EnDivingGame* this, PlayState* play) {
     if (!this->allRupeesThrown && this->spawnRuppyTimer == 0) {
         this->spawnRuppyTimer = 5;
         EnDivingGame_SpawnRuppy(this, play);
-        this->unthrownRupees--;
+        this->rupeesLeftToThrow--;
         if (!GET_EVENTCHKINF(EVENTCHKINF_OBTAINED_SILVER_SCALE)) {
             this->throwTimer = 30;
         } else {
             this->throwTimer = 5;
         }
-        if (this->unthrownRupees <= 0) {
-            this->unthrownRupees = 0;
+        if (this->rupeesLeftToThrow <= 0) {
+            this->rupeesLeftToThrow = 0;
             this->allRupeesThrown = true;
         }
     }
