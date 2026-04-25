@@ -376,7 +376,7 @@ void DemoSa_Action_EndMedallionCutscene(DemoSa* this, PlayState* play) {
     DemoSa_UpdateSkelAnime(this);
 }
 
-void DemoSa_InitBarrier(DemoSa* this, PlayState* play) {
+void DemoSa_InitTrialOrSealingGanon(DemoSa* this, PlayState* play) {
     s32 pad[2];
     SkelAnime* skelAnime = &this->skelAnime;
     f32 frameCount = Animation_GetLastFrame(&gSariaSealGanonAnim);
@@ -802,7 +802,7 @@ void DemoSa_Init(Actor* thisx, PlayState* play) {
 
     switch (this->actor.params) {
         case 2:
-            DemoSa_InitBarrier(this, play);
+            DemoSa_InitTrialOrSealingGanon(this, play);
             break;
         case 3:
             DemoSa_InitUnused(this, play);
