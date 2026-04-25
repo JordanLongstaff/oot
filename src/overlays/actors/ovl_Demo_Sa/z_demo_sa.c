@@ -81,8 +81,8 @@ static DemoSaActionFunc sActionFuncs[] = {
     DemoSa_Action_RaiseArmsForMedallion,        // DEMOSA_ACTION_RAISE_ARMS_FOR_MEDALLION
     DemoSa_Action_AwaitMedallion,               // DEMOSA_ACTION_AWAIT_FOREST_MEDALLION
     DemoSa_Action_EndMedallionCutscene,         // DEMOSA_ACTION_FINISH_FOREST_MEDALLION_CS
-    DemoSa_Action_SageInvisible,                // DEMOSA_ACTION_FOREST_TRIAL_INVISIBLE
-    DemoSa_Action_SageFade,                     // DEMOSA_ACTION_FOREST_TRIAL_FADE
+    DemoSa_Action_SageInvisible,                // DEMOSA_ACTION_SAGE_INVISIBLE
+    DemoSa_Action_SageFade,                     // DEMOSA_ACTION_SAGE_FADE
     DemoSa_Action_AwaitLightBall,               // DEMOSA_ACTION_AWAIT_SPAWN_LIGHT_BALL
     DemoSa_Action_Unused,                       // DEMOSA_ACTION_UNUSED
     DemoSa_Action_CreditsInvisible,             // DEMOSA_ACTION_CREDITS_INVISIBLE
@@ -146,7 +146,7 @@ void DemoSa_SetMouth(DemoSa* this, s16 mouthIndex) {
 
 #if DEBUG_FEATURES
 void func_8098E530(DemoSa* this) {
-    this->action = DEMOSA_ACTION_FOREST_TRIAL_INVISIBLE;
+    this->action = DEMOSA_ACTION_SAGE_INVISIBLE;
     this->drawConfig = DEMOSA_DRAW_NOTHING;
     this->alpha = 0;
     this->isLightBall = false;
@@ -382,7 +382,7 @@ void DemoSa_InitTrialOrSealingGanon(DemoSa* this, PlayState* play) {
 
     SkelAnime_InitFlex(play, skelAnime, &gSariaSkel, NULL, NULL, NULL, 0);
     Animation_Change(skelAnime, &gSariaSealGanonAnim, 1.0f, 0.0f, frameCount, ANIMMODE_ONCE, 0.0f);
-    this->action = DEMOSA_ACTION_FOREST_TRIAL_INVISIBLE;
+    this->action = DEMOSA_ACTION_SAGE_INVISIBLE;
     this->actor.shape.shadowAlpha = 0;
     DemoSa_SetEyes(this, SARIA_EYE_CLOSED);
     DemoSa_SetMouth(this, SARIA_MOUTH_CLOSED);
@@ -408,7 +408,7 @@ void DemoSa_SageAction_SpawnLightBall(DemoSa* this, PlayState* play) {
 
 void DemoSa_SageAction_CheckFadeIn(DemoSa* this, PlayState* play) {
     if (DemoSa_CheckForCue(this, play, 4, 4)) {
-        this->action = DEMOSA_ACTION_FOREST_TRIAL_FADE;
+        this->action = DEMOSA_ACTION_SAGE_FADE;
         this->drawConfig = DEMOSA_DRAW_XLU;
         this->alpha = 0;
         this->actor.shape.shadowAlpha = 0;
@@ -434,7 +434,7 @@ void DemoSa_SageAction_Fade(DemoSa* this, PlayState* play) {
     } else {
         *fadeTimer -= 1.0f;
         if (*fadeTimer <= 0.0f) {
-            this->action = DEMOSA_ACTION_FOREST_TRIAL_INVISIBLE;
+            this->action = DEMOSA_ACTION_SAGE_INVISIBLE;
             this->drawConfig = DEMOSA_DRAW_NOTHING;
             *fadeTimer = 0.0f;
             this->alpha = 0;
@@ -447,7 +447,7 @@ void DemoSa_SageAction_Fade(DemoSa* this, PlayState* play) {
 
 void DemoSa_SageAction_CheckFadeOut(DemoSa* this, PlayState* play) {
     if (DemoSa_CheckForNoCue(this, play, 4, 4)) {
-        this->action = DEMOSA_ACTION_FOREST_TRIAL_FADE;
+        this->action = DEMOSA_ACTION_SAGE_FADE;
         this->drawConfig = DEMOSA_DRAW_XLU;
         this->fadeTimer = kREG(5) + 10.0f;
         this->alpha = 255;
