@@ -35,12 +35,12 @@ void DemoSa_Draw(Actor* thisx, PlayState* play);
 void DemoSa_Action_SetupForestMedallionCutscene(DemoSa* this, PlayState* play);
 void DemoSa_Action_AwaitBlueWarp(DemoSa* this, PlayState* play);
 void DemoSa_Action_RiseThroughBlueWarp(DemoSa* this, PlayState* play);
-void DemoSa_Action_SageOfForestDialog(DemoSa* this, PlayState* play);
+void DemoSa_Action_ChamberOfSagesDialog(DemoSa* this, PlayState* play);
 void DemoSa_Action_RaiseArmsForMedallion(DemoSa* this, PlayState* play);
 void DemoSa_Action_AwaitMedallion(DemoSa* this, PlayState* play);
 void DemoSa_Action_EndMedallionCutscene(DemoSa* this, PlayState* play);
-void DemoSa_Action_ForestTrialInvisible(DemoSa* this, PlayState* play);
-void DemoSa_Action_ForestTrialFade(DemoSa* this, PlayState* play);
+void DemoSa_Action_SageInvisible(DemoSa* this, PlayState* play);
+void DemoSa_Action_SageFade(DemoSa* this, PlayState* play);
 void DemoSa_Action_AwaitLightBall(DemoSa* this, PlayState* play);
 void DemoSa_Action_Unused(DemoSa* this, PlayState* play);
 void DemoSa_Action_CreditsInvisible(DemoSa* this, PlayState* play);
@@ -77,12 +77,12 @@ static DemoSaActionFunc sActionFuncs[] = {
     DemoSa_Action_SetupForestMedallionCutscene, // DEMOSA_ACTION_SETUP_FOREST_MEDALLION_CS
     DemoSa_Action_AwaitBlueWarp,                // DEMOSA_ACTION_AWAIT_BLUE_WARP
     DemoSa_Action_RiseThroughBlueWarp,          // DEMOSA_ACTION_RISE_THROUGH_BLUE_WARP
-    DemoSa_Action_SageOfForestDialog,           // DEMOSA_ACTION_SAGE_OF_FOREST_DIALOG
+    DemoSa_Action_ChamberOfSagesDialog,         // DEMOSA_ACTION_CHAMBER_OF_SAGES_DIALOG
     DemoSa_Action_RaiseArmsForMedallion,        // DEMOSA_ACTION_RAISE_ARMS_FOR_MEDALLION
     DemoSa_Action_AwaitMedallion,               // DEMOSA_ACTION_AWAIT_FOREST_MEDALLION
     DemoSa_Action_EndMedallionCutscene,         // DEMOSA_ACTION_FINISH_FOREST_MEDALLION_CS
-    DemoSa_Action_ForestTrialInvisible,         // DEMOSA_ACTION_FOREST_TRIAL_INVISIBLE
-    DemoSa_Action_ForestTrialFade,              // DEMOSA_ACTION_FOREST_TRIAL_FADE
+    DemoSa_Action_SageInvisible,                // DEMOSA_ACTION_FOREST_TRIAL_INVISIBLE
+    DemoSa_Action_SageFade,                     // DEMOSA_ACTION_FOREST_TRIAL_FADE
     DemoSa_Action_AwaitLightBall,               // DEMOSA_ACTION_AWAIT_SPAWN_LIGHT_BALL
     DemoSa_Action_Unused,                       // DEMOSA_ACTION_UNUSED
     DemoSa_Action_CreditsInvisible,             // DEMOSA_ACTION_CREDITS_INVISIBLE
@@ -300,7 +300,7 @@ void DemoSa_CsForestMedallion_CheckBlueWarp(DemoSa* this, PlayState* play) {
 
 void DemoSa_CsForestMedallion_EndRise(DemoSa* this) {
     if (this->actor.shape.yOffset >= 0.0f) {
-        this->action = DEMOSA_ACTION_SAGE_OF_FOREST_DIALOG;
+        this->action = DEMOSA_ACTION_CHAMBER_OF_SAGES_DIALOG;
         this->actor.shape.yOffset = 0.0f;
     }
 }
@@ -353,7 +353,7 @@ void DemoSa_Action_RiseThroughBlueWarp(DemoSa* this, PlayState* play) {
     DemoSa_CsForestMedallion_EndRise(this);
 }
 
-void DemoSa_Action_SageOfForestDialog(DemoSa* this, PlayState* play) {
+void DemoSa_Action_ChamberOfSagesDialog(DemoSa* this, PlayState* play) {
     DemoSa_UpdateBgCheckInfo(this, play);
     DemoSa_UpdateSkelAnime(this);
     DemoSa_CsForestMedallion_CheckStartRaisingArms(this, play);
@@ -459,14 +459,14 @@ void DemoSa_SageAction_CheckFadeOut(DemoSa* this, PlayState* play) {
     }
 }
 
-void DemoSa_Action_ForestTrialInvisible(DemoSa* this, PlayState* play) {
+void DemoSa_Action_SageInvisible(DemoSa* this, PlayState* play) {
     DemoSa_SageAction_CheckFadeIn(this, play);
 #if DEBUG_FEATURES
     func_8098E554(this, play);
 #endif
 }
 
-void DemoSa_Action_ForestTrialFade(DemoSa* this, PlayState* play) {
+void DemoSa_Action_SageFade(DemoSa* this, PlayState* play) {
     DemoSa_UpdateBgCheckInfo(this, play);
     DemoSa_UpdateSkelAnime(this);
     DemoSa_Blink(this);
