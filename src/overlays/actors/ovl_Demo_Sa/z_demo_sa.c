@@ -560,18 +560,18 @@ void DemoSa_Credits_CheckVisibility(DemoSa* this) {
 }
 
 void DemoSa_Credits_LookDown(DemoSa* this) {
-    DemoSa_AnimationChange(this, &gSariaSitting1Anim, 2, -8.0f, 0);
+    DemoSa_AnimationChange(this, &gSariaSitting1Anim, ANIMMODE_ONCE, -8.0f, 0);
     this->action = DEMOSA_ACTION_CREDITS_LOOK_DOWN;
 }
 
 void DemoSa_Credits_LookUp(DemoSa* this) {
-    DemoSa_AnimationChange(this, &gSariaSitting2Anim, 2, 0.0f, 0);
+    DemoSa_AnimationChange(this, &gSariaSitting2Anim, ANIMMODE_ONCE, 0.0f, 0);
     this->action = DEMOSA_ACTION_CREDITS_LOOK_UP;
 }
 
 void DemoSa_Credits_LookForward(DemoSa* this, s32 isHeadUp) {
     if (isHeadUp) {
-        DemoSa_AnimationChange(this, &gSariaSitting3Anim, 0, 0.0f, 0);
+        DemoSa_AnimationChange(this, &gSariaSitting3Anim, ANIMMODE_LOOP, 0.0f, 0);
         this->action = DEMOSA_ACTION_CREDITS_FACING_FORWARD;
     }
 }
@@ -682,7 +682,7 @@ void DemoSa_CsBridge_LookAtLink(DemoSa* this, PlayState* play) {
         this->isHoldingOcarina = false;
         this->actor.shape.shadowAlpha = 0;
     } else {
-        DemoSa_AnimationChange(this, &gSariaWaitOnBridgeAnim, 0, 0.0f, 0);
+        DemoSa_AnimationChange(this, &gSariaWaitOnBridgeAnim, ANIMMODE_LOOP, 0.0f, 0);
         this->action = DEMOSA_ACTION_BRIDGE_LOOKING_SAD;
         this->drawConfig = DEMOSA_DRAW_OPA;
         this->isHoldingOcarina = false;
@@ -701,7 +701,7 @@ void DemoSa_CsBridge_CheckFadeFinished(DemoSa* this) {
 }
 
 void DemoSa_CsBridge_ClutchOcarina(DemoSa* this) {
-    DemoSa_AnimationChange(this, &gSariaHoldOcarinaAnim, 0, 0.0f, 0);
+    DemoSa_AnimationChange(this, &gSariaHoldOcarinaAnim, ANIMMODE_LOOP, 0.0f, 0);
     this->action = DEMOSA_ACTION_BRIDGE_CLUTCH_OCARINA;
     this->drawConfig = DEMOSA_DRAW_OPA;
     this->isHoldingOcarina = true;
@@ -710,7 +710,7 @@ void DemoSa_CsBridge_ClutchOcarina(DemoSa* this) {
 }
 
 void DemoSa_CsBridge_GiveOcarina(DemoSa* this) {
-    DemoSa_AnimationChange(this, &gSariaGiveLinkOcarinaAnim, 2, -8.0f, 0);
+    DemoSa_AnimationChange(this, &gSariaGiveLinkOcarinaAnim, ANIMMODE_ONCE, -8.0f, 0);
     this->action = DEMOSA_ACTION_BRIDGE_GIVE_OCARINA;
     this->drawConfig = DEMOSA_DRAW_OPA;
     this->isHoldingOcarina = true;
@@ -719,7 +719,7 @@ void DemoSa_CsBridge_GiveOcarina(DemoSa* this) {
 
 void DemoSa_CsBridge_HoldOutOcarina(DemoSa* this, s32 animFinished) {
     if (animFinished) {
-        DemoSa_AnimationChange(this, &gSariaHoldOutOcarinaAnim, 0, 0, 0);
+        DemoSa_AnimationChange(this, &gSariaHoldOutOcarinaAnim, ANIMMODE_LOOP, 0, 0);
     }
 }
 
