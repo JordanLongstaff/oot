@@ -43,7 +43,7 @@ void DemoSa_Action_EndMedallionCutscene(DemoSa* this, PlayState* play);
 void DemoSa_Action_ForestTrialInvisible(DemoSa* this, PlayState* play);
 void DemoSa_Action_ForestTrialFade(DemoSa* this, PlayState* play);
 void DemoSa_Action_AwaitLightBall(DemoSa* this, PlayState* play);
-void DemoSa_Action_Unknown(DemoSa* this, PlayState* play);
+void DemoSa_Action_Unused(DemoSa* this, PlayState* play);
 void DemoSa_Action_CreditsInvisible(DemoSa* this, PlayState* play);
 void DemoSa_Action_CreditsFadeIn(DemoSa* this, PlayState* play);
 void DemoSa_Action_CreditsFacingForward(DemoSa* this, PlayState* play);
@@ -85,7 +85,7 @@ static DemoSaActionFunc sActionFuncs[] = {
     DemoSa_Action_ForestTrialInvisible,         // DEMOSA_ACTION_FOREST_TRIAL_INVISIBLE
     DemoSa_Action_ForestTrialFade,              // DEMOSA_ACTION_FOREST_TRIAL_FADE
     DemoSa_Action_AwaitLightBall,               // DEMOSA_ACTION_AWAIT_SPAWN_LIGHT_BALL
-    DemoSa_Action_Unknown,                      // DEMOSA_ACTION_UNKNOWN
+    DemoSa_Action_Unused,                       // DEMOSA_ACTION_UNUSED
     DemoSa_Action_CreditsInvisible,             // DEMOSA_ACTION_CREDITS_INVISIBLE
     DemoSa_Action_CreditsFadeIn,                // DEMOSA_ACTION_CREDITS_FADE_IN
     DemoSa_Action_CreditsFacingForward,         // DEMOSA_ACTION_CREDITS_FACING_FORWARD
@@ -512,13 +512,13 @@ void DemoSa_DrawXlu(DemoSa* this, PlayState* play) {
     CLOSE_DISPS(play->state.gfxCtx, "../z_demo_sa_inKenjyanomaDemo02.c", 325);
 }
 
-void DemoSa_InitUnknown(DemoSa* this, PlayState* play) {
+void DemoSa_InitUnused(DemoSa* this, PlayState* play) {
     SkelAnime_InitFlex(play, &this->skelAnime, &gSariaSkel, &gSariaWaitArmsToSideAnim, NULL, NULL, 0);
-    this->action = DEMOSA_ACTION_UNKNOWN;
+    this->action = DEMOSA_ACTION_UNUSED;
     this->drawConfig = DEMOSA_DRAW_OPA;
 }
 
-void DemoSa_Action_Unknown(DemoSa* this, PlayState* play) {
+void DemoSa_Action_Unused(DemoSa* this, PlayState* play) {
     DemoSa_UpdateBgCheckInfo(this, play);
     DemoSa_UpdateSkelAnime(this);
     DemoSa_Blink(this);
@@ -805,7 +805,7 @@ void DemoSa_Init(Actor* thisx, PlayState* play) {
             DemoSa_InitBarrier(this, play);
             break;
         case 3:
-            DemoSa_InitUnknown(this, play);
+            DemoSa_InitUnused(this, play);
             break;
         case 4:
             DemoSa_InitCredits(this, play);
